@@ -9,19 +9,16 @@ export const App = () => {
   const [loggedInUser, setLoggedInUser] = useState(null);
   const authData = useContext(AuthContext);
 
-  // Persist login state on page reload
-  // useEffect(() => {
-  //   const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
-  //   if (loggedInUser) {
-  //     setUser(loggedInUser.role);
-  //     if (loggedInUser.role === 'employee') {
-  //       const employee = authData?.employees?.find((emp) => emp.email === loggedInUser.email);
-  //       if (employee) {
-  //         setLoggedInUser(employee);
-  //       }
-  //     }
-  //   }
-  // }, [authData]);
+ 
+  useEffect(() => {
+     const loggedInUser = localStorage.getItem('loggedInUser');
+    if (loggedInUser) {
+      const userData = JSON.parse(loggedInUser);
+      setUser(userData.role);
+      setLoggedInUser(userData.employee);
+    }
+    }, []);
+
 
   const handleLogin = (email, password) => {
     if (email === 'admin@me.com' && password === '123') {
@@ -33,7 +30,7 @@ export const App = () => {
       if (employee) {
         setUser('employee');
         setLoggedInUser(employee);
-        localStorage.setItem('loggedInUser', JSON.stringify({ role: 'employee', ...employee }));
+        localStorage.setItem('loggedInUser', JSON.stringify({ role: 'employee', data: employee }));
       } else {
         alert('Invalid credentials');
       }
