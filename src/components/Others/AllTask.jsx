@@ -3,9 +3,7 @@ import { AuthContext } from '../../context/AuthProvider'
 
 const AllTask = () => {
 
-   const authData =  useContext(AuthContext);
-
-   console.log(authData.employees);
+   const [userData, setUserData] =  useContext(AuthContext);
 
 
   return (
@@ -19,13 +17,13 @@ const AllTask = () => {
                     </div>
        
        <div className=''>
-            {authData.employees.map((e , idx)=>{
-            return <div className='bg-transparent border-2 border-emerald-500  py-2 px-4 mb-2   flex justify-between rounded'>
-                        <h2 className='w-1/5 text-red-400'>{e.firstName}</h2>
-                        <h3 className='w-1/5 text-blue-600'>{e.taskCount.newTask}</h3>
-                        <h5 className='w-1/5 text-yellow-400'>{e.taskCount.active}</h5>
-                        <h5 className='w-1/5 text-green-600'>{e.taskCount.completed}</h5>
-                        <h5 className='w-1/5 text-red-400'>{e.taskCount.failed}</h5>
+            {userData.map((e , idx)=>{
+            return <div key={idx} className='bg-transparent border-2 border-emerald-500  py-2 px-4 mb-2   flex justify-between rounded'>
+                        <h2  className='w-1/5 text-red-400'>{e.firstName}</h2>
+                        <h3  className='w-1/5 text-blue-600'>{e.taskCount.newTask}</h3>
+                        <h5  className='w-1/5 text-yellow-400'>{e.taskCount.active}</h5>
+                        <h5  className='w-1/5 text-green-600'>{e.taskCount.completed}</h5>
+                        <h5  className='w-1/5 text-red-400'>{e.taskCount.failed}</h5>
                     </div>
             })  }
         </div>   

@@ -3,16 +3,17 @@ import Login from './components/Auth/Login';
 import EmployeeDashboard from './components/Dashboard.jsx/EmployeeDashboard';
 import AdminDashboard from './components/Dashboard.jsx/AdminDashboard';
 import { AuthContext } from './context/AuthProvider';
+import { setLocalStorage } from './utils/localStorage';
 
 export const App = () => {
   const [user, setUser] = useState(null);
   const [loggedInUser, setLoggedInUser] = useState(null);
-  const authData = useContext(AuthContext);
+  const [userData, setUserData] = useContext(AuthContext);
 
  
   useEffect(() => {
      const loggedInUser = localStorage.getItem('loggedInUser');
-    if (loggedInUser) {
+     if (loggedInUser) {
       const userData = JSON.parse(loggedInUser);
       setUser(userData.role);
       setLoggedInUser(userData.employee);
@@ -25,8 +26,8 @@ export const App = () => {
       setUser('admin');
       setLoggedInUser({ role: 'admin' });
       localStorage.setItem('loggedInUser', JSON.stringify({ role: 'admin' }));
-    } else if (authData && authData.employees) {
-      const employee = authData.employees.find((employee) => employee.email === email && employee.password === password);
+    } else if (userData) {
+      const employee = userData.find((employee) => employee.email === email && employee.password === password);
       if (employee) {
         setUser('employee');
         setLoggedInUser(employee);
@@ -34,7 +35,7 @@ export const App = () => {
       } else {
         alert('Invalid credentials');
       }
-    } else {
+    } else  {
       alert('Invalid credentials');
     }
   };
@@ -42,8 +43,8 @@ export const App = () => {
   return (
     <>
       {!user && <Login handleLogin={handleLogin} />}
-      {user === 'admin' && <AdminDashboard />}
-      {user === 'employee' && <EmployeeDashboard data={loggedInUser} />}
+      {user === 'admin' && <AdminDashboard changeUser ={setUser}/>}
+      {user === 'employee' && <EmployeeDashboard data={loggedInUser} changeUser ={setUser}/>}
     </>
   );
 };
